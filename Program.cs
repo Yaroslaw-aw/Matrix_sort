@@ -1,4 +1,4 @@
-﻿int[,] sorted_matrix = Fill_Array(8, 3);
+﻿int[,] sorted_matrix = Fill_Array(8, 8);
 
 PrintArray(sorted_matrix);
 
@@ -20,14 +20,17 @@ void Matrix_sort(int[,] matrix)
             int max_i = last_line;
             int max_j = last_column;
 
-            for (int k = 0; k < matrix.GetLength(0) - i; k++)
+            bool flag = true;
+
+            for (int k = 0; k < matrix.GetLength(0) - i && flag; k++)
             {
-                for (int l = 0; l < matrix.GetLength(1); l++)
+                for (int l = 0; l < matrix.GetLength(1) && flag; l++)
                 {
                     if (k == last_line &&
                         l == matrix.GetLength(1) - j)
                     {
-                        goto Label;
+                        flag = false;
+                        continue;                        
                     }
 
                     if (matrix[k, l] > max)
@@ -37,8 +40,7 @@ void Matrix_sort(int[,] matrix)
                         max_j = l;
                     }
                 }
-            }
-        Label:
+            }       
             int temp = matrix[last_line, last_column];
             matrix[last_line, last_column] = max;
             matrix[max_i, max_j] = temp;
@@ -51,16 +53,16 @@ void Matrix_sort(int[,] matrix)
 // Заполнение двумерного массива случайными числами
 int[,] Fill_Array(int m, int n)
 {
-    int[,] _array = new int[m, n];
+    int[,] array = new int[m, n];
 
-    for (int i = 0; i < _array.GetLength(0); i++)
+    for (int i = 0; i < array.GetLength(0); i++)
     {
-        for (int j = 0; j < _array.GetLength(1); j++)
+        for (int j = 0; j < array.GetLength(1); j++)
         {
-            _array[i, j] = new Random().Next(-20, 20);
+            array[i, j] = new Random().Next(0, 100);
         }
     }
-    return _array;
+    return array;
 }
 
 //Вывести массив любого типа на консоль
@@ -81,26 +83,8 @@ void PrintArray(Array matrix)
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
                     int l = (int)matrix.GetValue(i, j);
-                    if ( 0 < l && l < 10)
-                    {
-                        Console.Write($"00{l} ");
-                    }
-                    else if ( 10 <= l && l < 100)
-                    {
-                        Console.Write($"0{l} ");
-                    }
-                    else if (l < 0 && -10 < l)
-                    {
-                        Console.Write($" {l} ");
-                    }
-                    else if (l == 0)
-                    {
-                        Console.Write($"  {l} ");
-                    }
-                    else
-                    {
-                        Console.Write($"{l} ");
-                    }
+
+                    Console.Write(l.ToString().PadRight(5));                    
                 }
                 Console.WriteLine();
             }
